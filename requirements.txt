@@ -1,0 +1,17 @@
+pandas
+numpy
+setuptools
+kagglehub
+google-cloud-storage
+python-dotenv
+torch
+opencv-python-headless
+matplotlib            
+albumentations
+Pillow
+tqdm
+requests
+ipywidgets
+torchvision
+tensorboard
+dvc
