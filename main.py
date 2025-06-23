@@ -6,9 +6,10 @@ import torch
 from torchvision import models, transforms
 from PIL import Image, ImageDraw
 from src.model_architecture import FasterRCNNModel
+from config.paths_config import MODEL_PATH
 
 
-model_path = r"D:\MLOPS\MLOPS_PROJECT_FOUR\artifacts\models\fasterrcnn.pth"
+model_path = MODEL_PATH
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 model = FasterRCNNModel(num_classes=2, device=device).model

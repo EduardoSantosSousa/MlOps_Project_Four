@@ -1,0 +1,29 @@
+# Ignorar arquivos e pastas temporárias
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignorar arquivos de cache do Jupyter
+.ipynb_checkpoints/
+
+# Ignorar arquivos ocultos
+.env
+.DS_Store
+
+# Ignorar arquivos de log
+*.log
+
+# Ignorar pastas específicas
+notebooks/
+logs/
+.dvcignore
+.dvc/
+gcp.txt/
+.gitignore/
+dvc.lock
+dvc.yaml
+keggle.json
+serious-cat-455501-d2-eb22dbdecd08.json
+tensorboard_logs/
+artifacts/raw
