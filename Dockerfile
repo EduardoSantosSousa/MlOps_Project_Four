@@ -14,15 +14,15 @@ COPY . .
 # Instala dependências
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
-    && pip install --no-cache-dir -e . \
+    && pip install --default-timeout=200 --no-cache-dir -e . \
     && apt-get remove -y build-essential \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
 
 
 # Expõe porta da API
-EXPOSE 8000
+EXPOSE 8080
 
 # Comando para rodar o servidor FastAPI
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
 
