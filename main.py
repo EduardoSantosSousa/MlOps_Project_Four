@@ -7,23 +7,43 @@ from torchvision import models, transforms
 from PIL import Image, ImageDraw
 from src.model_architecture import FasterRCNNModel
 from config.paths_config import MODEL_PATH
+from contextlib import asynccontextmanager
 
-
-model_path = MODEL_PATH
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+model = None
 
-model = FasterRCNNModel(num_classes=2, device=device).model
-model.load_state_dict(torch.load(model_path, map_location=device))
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    global model
+    print("🔄 Carregando modelo...")
+    loaded_model = FasterRCNNModel(num_classes=2, device=device).model
+    loaded_model.load_state_dict(torch.load(MODEL_PATH, map_location=device))
+    loaded_model.to(device)
+    loaded_model.eval()
+    model = loaded_model
+    print("✅ Modelo carregado com sucesso!")
+    yield  # aqui começa o app
+    print("🛑 Finalizando aplicação")
 
-model.to(device)
-model.eval()
+
+app = FastAPI(lifespan=lifespan)
+
+#app = FastAPI()
+
+#model_path = MODEL_PATH
+#device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+#model = FasterRCNNModel(num_classes=2, device=device).model
+#model.load_state_dict(torch.load(model_path, map_location=device))
+
+#model.to(device)
+#model.eval()
 
 transforms = transforms.Compose([
     transforms.ToTensor(),  
 
 ])
 
-app = FastAPI()
 
 def predict_and_draw(image: Image.Image):
     
@@ -52,6 +72,7 @@ def predict_and_draw(image: Image.Image):
 @app.get("/")
 def read_root():
     return{"message": "Welcome to the Guns Object Detection API"}
+
 
 
 @app.post("/predict/")
